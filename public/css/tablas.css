@@ -1,0 +1,114 @@
+.content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin: auto;
+    width: 80%;
+}
+
+h4 {
+    color: #007bff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.form-control {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: none;
+    border-radius: 20px; /* Bordes redondeados */
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-success {
+    background-color: #d4edda;
+}
+
+.action-icons .btn {
+    padding: 6px;
+    margin-right: 5px; /* Ajuste el espaciado entre los botones */
+}
+
+.action-icons .btn i {
+    font-size: 18px;
+}
+
+.action-icons .btn-danger {
+    background-color: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.action-icons .btn-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.action-icons .btn-success {
+    background-color: transparent;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.action-icons .btn-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}

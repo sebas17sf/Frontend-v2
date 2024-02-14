@@ -23,7 +23,7 @@ class LoginController extends Controller
         ]);
 
         try {
-            $response = Http::get('http://localhost:3000/Usuarios', [
+            $response = Http::get('http://18.216.192.159:3000/Usuarios', [
                 'username' => $request->username,
                 'password' => $request->password,
             ]);
@@ -44,12 +44,10 @@ class LoginController extends Controller
                     return back()->with('error', 'Usuario o contraseña incorrectos');
                 }
             } else {
-                \Log::error('API Response Error: ' . $response->body());
-                return back()->with('error', 'Error al iniciar sesión');
+                 return back()->with('error', 'Error al iniciar sesión');
             }
         } catch (\Exception $e) {
-            \Log::error('Exception: ' . $e->getMessage());
-            return back()->with('error', 'Error al procesar la solicitud');
+             return back()->with('error', 'Error al procesar la solicitud');
         }
     }
 
@@ -67,7 +65,7 @@ class LoginController extends Controller
     {
         $username = $request->input('username');
 
-        $authResponse = Http::get('http://localhost:3000/Usuarios', [
+        $authResponse = Http::get('http://18.216.192.159:3000/Usuarios', [
             'username' => $username,
         ]);
 
@@ -98,7 +96,7 @@ class LoginController extends Controller
         ]);
 
         try {
-            $response = Http::post('http://localhost:3000/Usuarios', $request->all());
+            $response = Http::post('http://18.216.192.159:3000/Usuarios', $request->all());
 
             if ($response->successful()) {
                 return redirect()->route('login.index')->with('success', 'Usuario registrado con éxito');

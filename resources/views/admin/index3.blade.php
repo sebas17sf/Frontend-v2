@@ -16,8 +16,7 @@
 </head>
 
 <body>
-
-     @if (session('success'))
+    @if (session('success'))
         <script>
             Swal.fire({
                 icon: 'success',
@@ -27,6 +26,16 @@
         </script>
     @endif
 
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session('error') }}',
+            });
+        </script>
+    @endif
+    
     <div class="container">
         <!-- Header -->
         <header class="sidebar">
@@ -39,7 +48,7 @@
             <div class="sidebar-links">
 
 
-                <a href="{{ route('admin.index') }}" class="nav-link active">
+                <a href="{{ route('admin.index') }}" class="nav-link ">
                     <i class="material-icons">assignment</i> Aceptacion
                 </a>
 
@@ -47,7 +56,7 @@
                     <i class=" material-icons">description</i> Control
                 </a>
 
-                <a href="{{ route('admin.index3') }}" class="nav-link">
+                <a href="{{ route('admin.index3') }}" class="nav-link active">
                     <i class="material-icons">work</i> Estudiantes-Culminados
                 </a>
 
@@ -68,8 +77,7 @@
 
                 </nav>
                 <div class="container-fluid">
-                    <h4 class="h3 mb-2 text-gray-800 text-center"><b>Estudiantes Vinculacion con la Sociedad-
-                            Verificacion</b></h4>
+                    <h2 class="h3 mb-2 text-gray-800 text-center"><b>Aceptacion Estudiantes Vinculacion con la Sociedad</b></h2>
                     <hr>
                     <div class="form-group">
                         <input id="searchInput" class="form-control" placeholder="Buscar...">
@@ -83,14 +91,15 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Nombre Completo</th>
-                                            <th scope="col">Cédula</th>
-                                            <th scope="col">Correo Electrónico</th>
-                                            <th scope="col">Ciudad</th>
-                                            <th scope="col">Cohorte</th>
-                                            <th scope="col">Periodo</th>
-                                            <th scope="col">Carrera</th>
-                                            <th scope="col">Acciones</th>
+                                            <th>Nombre Completo</th>
+                                            <th>Cédula</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Ciudad</th>
+                                            <th>Cohorte</th>
+                                            <th>Periodo</th>
+                                            <th>Carrera</th>
+                                            <th>Proceso</th>
+                                       
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -103,39 +112,16 @@
                                                 <td>{{ $usuario['cohorte'] }}</td>
                                                 <td>{{ $usuario['periodo'] }}</td>
                                                 <td>{{ $usuario['carrera'] }}</td>
-                                                <td>
-                                                    <div class="btn-group" role="group" aria-label="Acciones">
-                                                        <form id="eliminarForm"
-                                                            action="{{ route('admin.eliminar', ['correoElectronico' => $usuario['correoElectronico']]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="button" class="btn btn-danger btn-sm mr-1"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="Rechazar" onclick="confirmarEliminar()">
-                                                                <i class="fas fa-times"></i><b> Rechazar</b>
-                                                            </button>
-                                                        </form>
-                                                        <form id="aceptarForm"
-                                                            action="{{ route('admin.aceptar', ['correoElectronico' => $usuario['correoElectronico']]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button type="button" class="btn btn-success btn-sm ml-1"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="Aceptar" onclick="confirmarAceptar()">
-                                                                <i class="fas fa-check"></i> <b>Aceptar</b>
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                <td>{{ $usuario['estado'] }}</td>
 
-                                                </td>
+
+                                               
+                                                 
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-
-
                             <div class="text-muted">
                                 Total de datos: {{ count($usuarios) }}
                             </div>
@@ -145,7 +131,12 @@
             </div>
         </div>
     </div>
-    </div>
+    <footer class="footer">
+
+        <span>© 202 Universidad de las Fuerzas Armadas ESPE - Todos los derechos reservados</span>
+
+    </footer>
+
     <script>
         document.getElementById('searchInput').addEventListener('input', function() {
             searchTerm = this.value.toLowerCase();
@@ -170,46 +161,45 @@
             });
         });
 
-        function confirmarEliminar() {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción no se puede deshacer',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, Rechazar'
-            }).then((willDelete) => {
-                if (willDelete.isConfirmed) {
-                    document.getElementById('eliminarForm').submit();
-                }
-            });
-        }
 
-        function confirmarAceptar() {
-            Swal.fire({
-              title: '¿Estás seguro?',
-                text: 'Esta acción no se puede deshacer',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, Acepar'
-            }).then((willAccept) => {
-                if (willAccept.isConfirmed) {
-                    document.getElementById('aceptarForm').submit();
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Eliminar Usuario
+            document.querySelector('.eliminar-usuario').addEventListener('click', function() {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción no se puede deshacer',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, Rechazar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, enviar el formulario
+                        this.closest('form').submit();
+                    }
+                });
             });
-        }
+
+            // Aceptar Usuario
+            document.querySelector('.aceptar-usuario').addEventListener('click', function() {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción no se puede deshacer',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, enviar el formulario
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
     </script>
-
-
-    <footer class="footer">
-
-        <span>© 202 Universidad de las Fuerzas Armadas ESPE - Todos los derechos reservados</span>
-
-    </footer>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

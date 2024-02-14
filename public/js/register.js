@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (correoElectronicoInput && errorCorreoElectronico) {
         correoElectronicoInput.addEventListener('input', function () {
             if (!correoElectronicoInput.checkValidity() || !validarCorreoElectronico(correoElectronicoInput.value)) {
-                errorCorreoElectronico.textContent = 'Ingrese un correo electrónico válido de la ESPE (ejemplo@espe.edu.ec)';
+                errorCorreoElectronico.textContent = 'Ingrese un correo electrónico válido';
             } else {
                 errorCorreoElectronico.textContent = '';
             }
@@ -53,8 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function validarCorreoElectronico(correo) {
-    var regex = /^[A-Za-z0-9._%+-]+@espe\.edu\.ec$/;
-    return regex.test(correo);
+     var regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
+
+     if (correo !== '@' && regex.test(correo)) {
+        return true; // Correo válido
+    } else {
+        return false; // Correo inválido
+    }
 }
 
 
@@ -69,13 +74,31 @@ document.getElementById('ciudad').addEventListener('input', function () {
         errorCiudad.textContent = '';
     }
 });
+  
+document.getElementById('formulario').addEventListener('submit', function (event) {
+    var recaptchaResponse = document.getElementById('g-recaptcha-response').value;
 
-document.getElementById('registration-form').addEventListener('submit', function (event) {
-    var response = grecaptcha.getResponse();
-
-    if (response.length === 0) {
+    if (!recaptchaResponse) {
+        // Si no se ha completado el reCAPTCHA, evita que el formulario se envíe
         event.preventDefault();
-        swal("¡Error!", "Por favor, completa el reCAPTCHA.", "error");
+        swal("¡Error!", "Por favor, completa la verificación reCAPTCHA.", "error");
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var formulario = document.getElementById('formulario');
+
+    if (formulario) {
+        formulario.addEventListener('submit', function(event) {
+            var recaptchaResponse = document.getElementById('g-recaptcha-response').value;
+
+            if (!recaptchaResponse) {
+                // Si no se ha completado el reCAPTCHA, evita que el formulario se envíe
+                event.preventDefault();
+                swal("¡Error!", "Por favor, completa la verificación reCAPTCHA.", "error");
+            }
+        });
+    } else {
+        console.error("No se encontró el formulario con id 'formulario'");
+    }
+});

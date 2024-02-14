@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Título por Defecto')</title>
+    <title>Verificacion</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
@@ -15,12 +15,15 @@
 
 <body>
     <div class="container">
+        <hr>
         <!-- Header -->
         <header class="sidebar">
             <div class="logo-container">
+                <hr>
                 <img src="https://srvcas.espe.edu.ec/authenticationendpoint/images/Logo-MiESPE.png" alt="Logo ESPE"
                     class="logo-image">
             </div>
+            <hr>
             <div class="sidebar-links">
                
 
