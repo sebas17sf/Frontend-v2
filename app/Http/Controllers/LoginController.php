@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 // Importante: Agregar esta línea
 
@@ -15,14 +17,19 @@ class LoginController extends Controller
         return view('login.index');
     }
 
+    public function register()
+    {
+        return view('login.register');
+    }
+
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
         try {
+            $request->validate([
+                'username' => 'required',
+                'password' => 'required',
+            ]);
+
             $response = Http::get('http://18.216.192.159:3000/Usuarios', [
                 'username' => $request->username,
                 'password' => $request->password,
@@ -35,16 +42,20 @@ class LoginController extends Controller
                     ->where('password', $request->password)->first();
 
                 if ($usuario) {
-                     if ($usuario['tipo'] == 'Admin') {
-                         return redirect()->route('admin.index')->with('success', 'Usuario autenticado con éxito');
+                    if ($usuario['tipo'] == 'Admin') {
+                        return redirect()->route('admin.index')->with('success', 'Usuario autenticado con éxito');
                     } else {
-                         return redirect()->route('login.index')->with('error', 'Tipo de usuario no válido');
+                        return redirect()->route('login.index')->with('error', 'Tipo de usuario no válido');
                     }
                 } else {
                     return back()->with('error', 'Usuario o contraseña incorrectos');
                 }
             } else {
-                 return back()->with('error', 'Error al iniciar sesión');
+                 if ($response->status() == 401) {
+                    return back()->with('error', 'Credenciales no válidas');
+                }
+
+                return back()->with('error', 'Error al iniciar sesión');
             }
         } catch (\Exception $e) {
              return back()->with('error', 'Error al procesar la solicitud');
@@ -56,10 +67,7 @@ class LoginController extends Controller
 
 
 
-    public function register()
-    {
-        return view('login.register');
-    }
+ 
 
     public function createRegister(Request $request)
     {
